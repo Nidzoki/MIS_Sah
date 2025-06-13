@@ -39,8 +39,10 @@
 </div>
 
 <div id="endscene" class="scene">
-	<p class="scene-content winning-sign"></p>
-	<div class="overlay"></div>
+	<div class="scene-content winning-sign">
+	</div>
+	<div class="overlay">
+	</div>
 </div>
 	
 <br>
@@ -215,9 +217,16 @@
 
 	</div>
 
-<div style="position:absolute;left:15px;bottom:15px;">
+<div style="position:absolute;left:15px;bottom:15px; right:15px;">
 	<button class="flip-board" onclick="boardAnimate()">Flip Board</button>
+	<button id="undoButton" class="flip-board">Undo</button>
 </div>
+
+<script>
+document.getElementById('undoButton').addEventListener('click', function() {
+    game.undo();
+});
+</script>
 
 <script type="text/javascript" src="piece.js"></script>
 <script type="text/javascript" src="History.js"></script>

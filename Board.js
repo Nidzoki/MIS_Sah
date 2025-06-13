@@ -168,6 +168,7 @@ const startBoard = (game, options = { playAgainst: 'human', aiColor: 'black', ai
 
     game.on('checkMate', color => {
         const endScene = document.getElementById('endscene');
+        //
         endScene.getElementsByClassName('winning-sign')[0].innerHTML = color + ' Wins';
         endScene.classList.add('show');
         setGameState('checkmate');
