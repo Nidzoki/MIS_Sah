@@ -1,9 +1,9 @@
-const ai = (aiTurn, depth = 3) => {
+const ai = (aiTurn) => {
     const ranks = { pawn: 1, king: 2, bishop: 3, knight: 3, rook: 5, queen: 9 };
 
     const simulationGame = new SimulationGame([], 'white');
 
-    const deepest = depth;
+    const deepest = 3;
 
     const humanTurn = aiTurn === 'white' ? 'black' : 'white';
 
@@ -31,14 +31,14 @@ const ai = (aiTurn, depth = 3) => {
 
     const isScoreGoodEnough = (score, turn) =>  turn === aiTurn ? score > 7 : score < -7;
 
-    const minimax = (pieces, turn, depth = 3, alpha = -Infinity, beta = Infinity) => {
+    const minimax = (pieces, turn, depth = 0) => {
         simulationGame.startNewGame(pieces, turn);
 
-        if (!simulationGame.getPieceByName(humanTurn + 'King') || simulationGame.king_dead(humanTurn)) {
-            return { score: -Infinity, depth };
+        if ( !simulationGame.getPieceByName(humanTurn + 'King') || simulationGame.king_dead(humanTurn ) ) {
+            return {score: -Infinity, depth};
         }
-        if (!simulationGame.getPieceByName(aiTurn + 'King') || simulationGame.king_dead(aiTurn)) {
-            return { score: Infinity, depth };
+        if ( !simulationGame.getPieceByName(aiTurn + 'King') ||  simulationGame.king_dead(aiTurn ) ) {
+            return {score: Infinity, depth};
         }
 
         let bestPlay = { move: null, score: turn === aiTurn ? -Infinity : Infinity };
@@ -47,41 +47,28 @@ const ai = (aiTurn, depth = 3) => {
             const allowedMoves = simulationGame.getPieceAllowedMoves(piece.name);
 
             for (const move of allowedMoves) {
+
                 const currentTestPlayInfo = {};
 
-                currentTestPlayInfo.move = { pieceName: piece.name, position: move };
+                currentTestPlayInfo.move = {pieceName: piece.name, position: move};
                 simulationGame.movePiece(piece.name, move);
 
-                let curScore;
-                if (depth === deepest || isBetterScore(bestPlay.score, score(simulationGame.pieces), turn) || isScoreGoodEnough(score(simulationGame.pieces), turn)) {
-                    curScore = score(simulationGame.pieces);
-                } else if (turn === aiTurn) {
-                    const result = minimax(simulationGame.pieces, humanTurn, depth + 1, alpha, beta);
-                    curScore = result.score;
-                } else {
-                    const result = minimax(simulationGame.pieces, aiTurn, depth + 1, alpha, beta);
-                    curScore = result.score;
-                }
-                currentTestPlayInfo.score = curScore;
+                const curScore = score(simulationGame.pieces);
 
-                if (isBetterScore(currentTestPlayInfo.score, bestPlay.score, turn)) {
+                if ( depth === deepest || isBetterScore(bestPlay.score, curScore, turn) || isScoreGoodEnough(curScore, turn) ) {
+                    currentTestPlayInfo.score = curScore;
+                }
+                else if (turn === aiTurn) {
+                    const result = minimax(simulationGame.pieces, humanTurn, depth + 1);
+                    currentTestPlayInfo.score = result.score;
+                } else {
+                    const result = minimax(simulationGame.pieces, aiTurn, depth + 1);
+                    currentTestPlayInfo.score = result.score;
+                }
+
+                if ( isBetterScore(currentTestPlayInfo.score, bestPlay.score, turn) ){
                     bestPlay.move = currentTestPlayInfo.move;
                     bestPlay.score = currentTestPlayInfo.score;
-                }
-
-                // Alpha-beta pruning
-                if (turn === aiTurn) {
-                    alpha = Math.max(alpha, bestPlay.score);
-                    if (beta <= alpha) {
-                        simulationGame.startNewGame(pieces, turn);
-                        return bestPlay;
-                    }
-                } else {
-                    beta = Math.min(beta, bestPlay.score);
-                    if (beta <= alpha) {
-                        simulationGame.startNewGame(pieces, turn);
-                        return bestPlay;
-                    }
                 }
 
                 simulationGame.startNewGame(pieces, turn);

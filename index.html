@@ -225,8 +225,13 @@
 </div>
 
 <script>
-document.getElementById('undoButton').addEventListener('click', function() {
-    game.undo();
+document.getElementById('undoButton').addEventListener('click', () => {
+    
+	const playAgainst = document.querySelector('input[name="oponent"]:checked').value;
+	if (playAgainst === 'ai') {
+		game.undo();
+	}
+	game.undo();
 });
 </script>
 
