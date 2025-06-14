@@ -4,6 +4,7 @@ class Game {
 	}
 
 	startNewGame(pieces, turn) {
+		document.getElementById('playAgainBtn').style.display = 'none';
 		this._setPieces(pieces);
 
 		this.turn = turn;
@@ -371,5 +372,6 @@ class Game {
 	checkmate(color){
 		this.triggerEvent('checkMate', color);
 		this.clearEvents();
+		document.getElementById('playAgainBtn').style.display = 'block';
 	}
 }

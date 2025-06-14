@@ -35,14 +35,16 @@
 			<button class="button button-big" onclick="startNewGame()">Start Game</button>
 		</div>
 	</div>
-	<div class="overlay"></div>
+	<div class="overlay">
+	</div>
 </div>
 
 <div id="endscene" class="scene">
-	<div class="scene-content winning-sign">
-	</div>
-	<div class="overlay">
-	</div>
+    <div class="scene-content winning-sign">
+    </div>
+    <div class="overlay">
+        <button id="playAgainBtn" class="button button-big" style="display:none; position:absolute; left:50%; top:70%; transform:translate(-50%, -50%);" onclick="window.location.reload()">Play Again</button>
+    </div>
 </div>
 	
 <br>
