@@ -31,7 +31,7 @@ const ai = (aiTurn, depth = 3) => {
 
     const isScoreGoodEnough = (score, turn) =>  turn === aiTurn ? score > 7 : score < -7;
 
-    const minimax = (pieces, turn, depth = 0, alpha = -Infinity, beta = Infinity) => {
+    const minimax = (pieces, turn, depth = 3, alpha = -Infinity, beta = Infinity) => {
         simulationGame.startNewGame(pieces, turn);
 
         if (!simulationGame.getPieceByName(humanTurn + 'King') || simulationGame.king_dead(humanTurn)) {
