@@ -4,7 +4,6 @@ class Game {
 	}
 
 	startNewGame(pieces, turn) {
-		document.getElementById('playAgainBtn').style.display = 'none';
 		this._setPieces(pieces);
 
 		this.turn = turn;
@@ -18,6 +17,7 @@ class Game {
 			turnChange: []
 		}
 		this.history = new History();
+		
 	}
 
 	_setPieces(pieces) {
@@ -264,6 +264,8 @@ class Game {
 			const move = { from: prevPosition, to: position, piece: piece, castling };
 			this.addToHistory(move);
 			this.triggerEvent('pieceMove', move);
+			document.getElementById('moveSound').currentTime = 0;
+			document.getElementById('moveSound').play();
 
 			if (piece.rank === 'pawn' && (position > 80 || position < 20)) {
 				this.promote(piece);
@@ -281,8 +283,7 @@ class Game {
 					// alert('check');
 				}
 			}
-			document.getElementById('moveSound').currentTime = 0;
-			document.getElementById('moveSound').play();
+			
 			
 			return true;
 		}
@@ -305,6 +306,8 @@ class Game {
 
 		changePosition(rook, newPosition);
 		const move = {from: prevPosition, to: newPosition, piece: rook, castling: true};
+		document.getElementById('castleSound').currentTime = 0;
+		document.getElementById('castleSound').play();
 		this.triggerEvent('pieceMove', move);
 		this.addToHistory(move);
 	}
@@ -312,6 +315,8 @@ class Game {
 	promote(pawn) {
 		pawn.name = pawn.name.replace('Pawn', 'Queen');
 		pawn.rank = 'queen';
+		document.getElementById('promoteSound').currentTime = 0;
+		document.getElementById('promoteSound').play();
 		this.addToHistory({from: 0, to: pawn.position, piece: pawn});
 		this.triggerEvent('promotion', pawn);
 	}
@@ -369,6 +374,8 @@ class Game {
 			}
 		}
 		this.setClickedPiece(piece);
+
+		
 		return 0;
 	}
 
@@ -376,5 +383,7 @@ class Game {
 		this.triggerEvent('checkMate', color);
 		this.clearEvents();
 		document.getElementById('playAgainBtn').style.display = 'block';
+		document.getElementById('gameEndSound').currentTime = 0;
+		document.getElementById('gameEndSound').play();
 	}
 }

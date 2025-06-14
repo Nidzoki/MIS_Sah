@@ -223,9 +223,19 @@
 	<button class="flip-board" onclick="boardAnimate()">Flip Board</button>
 	<button id="undoButton" class="flip-board">Undo</button>
 	<button class="flip-board" onclick="window.location.reload()">New game</button>
+	<button class="flip-board" onclick="toggleMute()">Mute</button>
+	<button class="flip-board" id="darkmode" onclick="toggleDarkMode()">🌙 Dark Mode</button>
+
 </div>
 
+
 <audio id="moveSound" src="audio/move.mp3" preload="auto"></audio>
+<audio id="captureSound" src="audio/capture.mp3" preload="auto"></audio>
+<audio id="castleSound" src="audio/castle.mp3" preload="auto"></audio>
+<audio id="gameStartSound" src="audio/game-start.mp3" preload="auto"></audio>
+<audio id="gameEndSound" src="audio/game-end.mp3" preload="auto"></audio>
+<audio id="moveCheckSound" src="audio/move-check.mp3" preload="auto"></audio>
+<audio id="promoteSound" src="audio/promote.mp3" preload="auto"></audio>
 
 <script>
 document.getElementById('undoButton').addEventListener('click', () => {
@@ -281,6 +291,26 @@ document.getElementById('undoButton').addEventListener('click', () => {
 
 	changeColorSelect();
 </script>
+
+<script>
+	function toggleMute() {
+    const moveSound = document.getElementById('moveSound');
+    moveSound.muted = !moveSound.muted;    // Optionally, update button text:
+    const muteBtn = document.querySelector('button[onclick="toggleMute()"]');
+    if (muteBtn) {
+        muteBtn.textContent = moveSound.muted ? "Unmute" : "Mute";
+    }
+}
+</script>
+
+<script>
+function toggleDarkMode() {
+    document.body.classList.toggle('dark-mode');
+	document.getElementById("darkmode").innerText = document.body.classList.contains('dark-mode') ? "🌙 Light Mode" : "🌙 Dark Mode";
+}
+</script>
+
+
 
 </body>
 </html>

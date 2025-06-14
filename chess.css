@@ -5,6 +5,10 @@
 body{
 	background: #ddd;
 }
+body.dark-mode {
+    background: #181818;
+    color: #f0f0f0;
+}
 .board-container {
 	width: 600px;
 	max-width: 90%;
@@ -268,4 +272,23 @@ input[type="radio"]:checked + label {
     transform: translate(-50%, -50%);
     z-index: 4;
     pointer-events: auto;
+}
+
+.dark-mode .board-container {
+    background: #222;
+    border-color: #444;
+}
+
+.dark-mode .scene-content,
+.dark-mode .overlay {
+    background: rgba(30,30,30,0.95);
+    color: #f0f0f0;
+}
+
+.dark-mode .square-light {
+    background: #b5b5b5 !important;
+}
+
+.dark-mode .square-dark {
+    background: #444 !important;
 }
