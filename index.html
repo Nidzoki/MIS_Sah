@@ -225,9 +225,32 @@
 	<button class="flip-board" onclick="window.location.reload()">New game</button>
 	<button class="flip-board" onclick="toggleMute()">Mute</button>
 	<button class="flip-board" id="darkmode" onclick="toggleDarkMode()">🌙 Dark Mode</button>
-
+	<button class="flip-board" id="aiMoveBtn" onclick="playAIMove()">AI Move</button>
 </div>
 
+<!-- Floating Speech Recognition Button -->
+<button id="speechBtn" title="Voice Commands" style="
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 2000;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: #222;
+    color: #fff;
+    border: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    font-size: 2em;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: background 0.2s, opacity 0.2s;
+"
+    onmouseover="this.style.opacity=1"
+    onmouseout="this.style.opacity=0.8"
+>
+    🎤
+</button>
 
 <audio id="moveSound" src="audio/move.mp3" preload="auto"></audio>
 <audio id="captureSound" src="audio/capture.mp3" preload="auto"></audio>
@@ -307,6 +330,74 @@ document.getElementById('undoButton').addEventListener('click', () => {
 function toggleDarkMode() {
     document.body.classList.toggle('dark-mode');
 	document.getElementById("darkmode").innerText = document.body.classList.contains('dark-mode') ? "🌙 Light Mode" : "🌙 Dark Mode";
+}
+</script>
+
+<script>
+const speechBtn = document.getElementById('speechBtn');
+let recognition;
+if ('webkitSpeechRecognition' in window) {
+    recognition = new webkitSpeechRecognition();
+    recognition.lang = 'en-US';
+    recognition.continuous = false;
+    recognition.interimResults = false;
+
+    recognition.onresult = function(event) {
+        const command = event.results[0][0].transcript.trim().toLowerCase();
+        handleVoiceCommand(command);
+    };
+
+    recognition.onerror = function(event) {
+        alert('Speech recognition error: ' + event.error);
+    };
+} else {
+    speechBtn.style.display = 'none';
+    alert('Speech recognition not supported in this browser.');
+}
+
+speechBtn.onclick = function() {
+    if (recognition) {
+        recognition.start();
+        speechBtn.style.background = "#4caf50";
+        setTimeout(() => { speechBtn.style.background = "#222"; }, 2000);
+    }
+};
+
+function handleVoiceCommand(command) {
+    // Add more commands as needed
+    if (command.includes('undo')) {
+        document.getElementById('undoButton').click();
+    } else if (command.includes('flip')) {
+        boardAnimate();
+    } else if (command.includes('new game')) {
+        window.location.reload();
+    } else if (command.includes('mute')) {
+        toggleMute();
+    } else if (command.includes('dark')) {
+        toggleDarkMode();
+    } else if (command.includes('light')) {
+        toggleDarkMode();
+    } else if (command.includes('play again')) {
+        window.location.reload();
+    } else if (command.includes('play move')) {
+        playAIMove();
+    }else {
+        alert('Command not recognized: ' + command);
+    }
+}
+</script>
+
+<script>
+function playAIMove() {
+    const currentTurn = game.turn;
+    const aiPlayer = ai(currentTurn);
+    aiPlayer.play(game.pieces, function(result) {
+        if (result && result.move) {
+            game.movePiece(result.move.pieceName, result.move.position);
+        } else {
+            alert("No valid AI move available.");
+        }
+    });
 }
 </script>
 
