@@ -281,12 +281,15 @@ class Game {
 					// alert('check');
 				}
 			}
-
+			document.getElementById('moveSound').currentTime = 0;
+			document.getElementById('moveSound').play();
+			
 			return true;
 		}
 		else{
 			return false;
 		}
+		
 	}
 
 	kill(piece) {
