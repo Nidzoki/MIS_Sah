@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Chess Game</title>
+	<title>Chess</title>
 	<link rel="stylesheet" type="text/css" href="chess.css">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 	<meta property="og:image" content="img/share.jpeg" />
 	<meta property="og:description" content="A complete well automated chess game made by JavaScript that contains AI. Check it out. I hope you like it." />
-	<meta name="author" content="Ahmed Alkholy">
+	<meta name="author" content="Nikola Vidović">
 	<link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 <body>
@@ -219,13 +219,17 @@
 
 	</div>
 
-<div style="position:absolute;left:15px;bottom:15px; right:15px;">
-	<button class="flip-board" onclick="boardAnimate()">Flip Board</button>
-	<button id="undoButton" class="flip-board">Undo</button>
-	<button class="flip-board" onclick="window.location.reload()">New game</button>
-	<button class="flip-board" onclick="toggleMute()">Mute</button>
-	<button class="flip-board" id="darkmode" onclick="toggleDarkMode()">🌙 Dark Mode</button>
-	<button class="flip-board" id="aiMoveBtn" onclick="playAIMove()">AI Move</button>
+<!-- Collapsible Menu Button -->
+<div id="menu-container" style="position:absolute;left:15px;bottom:15px;right:15px;">
+    <button id="menuToggleBtn" class="flip-board" onclick="toggleMenu()" style="min-width:100px;">☰ Menu</button>
+    <div id="menuButtons" style="display:none; margin-top:10px;">
+        <button class="flip-board" onclick="boardAnimate()">Flip Board</button>
+        <button id="undoButton" class="flip-board">Undo</button>
+        <button class="flip-board" onclick="window.location.reload()">New game</button>
+        <button class="flip-board" onclick="toggleMute()">Mute</button>
+        <button class="flip-board" id="darkmode" onclick="toggleDarkMode()">🌙 Dark Mode</button>
+        <button class="flip-board" id="aiMoveBtn" onclick="playAIMove()">AI Move</button>
+    </div>
 </div>
 
 <!-- Floating Speech Recognition Button -->
@@ -398,6 +402,13 @@ function playAIMove() {
             alert("No valid AI move available.");
         }
     });
+}
+</script>
+
+<script>
+function toggleMenu() {
+    const menu = document.getElementById('menuButtons');
+    menu.style.display = (menu.style.display === 'none' || menu.style.display === '') ? 'block' : 'none';
 }
 </script>
 
