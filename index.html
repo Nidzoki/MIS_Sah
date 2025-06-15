@@ -223,12 +223,13 @@
 <div id="menu-container" style="position:absolute;left:15px;bottom:15px;right:15px;">
     <button id="menuToggleBtn" class="flip-board" onclick="toggleMenu()" style="min-width:100px;">☰ Menu</button>
     <div id="menuButtons" style="display:none; margin-top:10px;">
-        <button class="flip-board" onclick="boardAnimate()">Flip Board</button>
-        <button id="undoButton" class="flip-board">Undo</button>
-        <button class="flip-board" onclick="window.location.reload()">New game</button>
-        <button class="flip-board" onclick="toggleMute()">Mute</button>
-        <button class="flip-board" id="darkmode" onclick="toggleDarkMode()">🌙 Dark Mode</button>
-        <button class="flip-board" id="aiMoveBtn" onclick="playAIMove()">AI Move</button>
+        <button class="flip-board" onclick="boardAnimate(); toggleMenu()">Flip Board</button>
+		<button id="undoButton" class="flip-board" onclick="undoMove(); toggleMenu()">Undo</button>
+		<button class="flip-board" onclick="window.location.reload(); toggleMenu()">New game</button>
+		<button class="flip-board" onclick="toggleMute(); toggleMenu()">Mute</button>
+		<button class="flip-board" id="darkmode" onclick="toggleDarkMode(); toggleMenu()">🌙 Dark Mode</button>
+		<button class="flip-board" id="aiMoveBtn" onclick="playAIMove(); toggleMenu()">AI Move</button>
+		<button class="flip-board" id="fullscreenBtn" onclick="toggleFullscreen(); toggleMenu()">Go Fullscreen</button>
     </div>
 </div>
 
@@ -255,6 +256,9 @@
 >
     🎤
 </button>
+
+<!-- Add a button to trigger fullscreen -->
+
 
 <audio id="moveSound" src="audio/move.mp3" preload="auto"></audio>
 <audio id="captureSound" src="audio/capture.mp3" preload="auto"></audio>
@@ -385,7 +389,15 @@ function handleVoiceCommand(command) {
         window.location.reload();
     } else if (command.includes('play move')) {
         playAIMove();
-    }else {
+    } else if (command.includes('fullscreen') || command.includes('full screen')) {
+        // Voice command for fullscreen
+        toggleFullscreen();
+    } else if (command.includes('exit fullscreen') || command.includes('exit full screen')) {
+        // Voice command to exit fullscreen
+        if (document.fullscreenElement) {
+            toggleFullscreen();
+        }
+    } else {
         alert('Command not recognized: ' + command);
     }
 }
@@ -410,6 +422,43 @@ function toggleMenu() {
     const menu = document.getElementById('menuButtons');
     menu.style.display = (menu.style.display === 'none' || menu.style.display === '') ? 'block' : 'none';
 }
+</script>
+
+<script>
+function toggleFullscreen() {
+  const btn = document.getElementById('fullscreenBtn');
+  if (!document.fullscreenElement) {
+    // Enter fullscreen
+    if (document.documentElement.requestFullscreen) {
+      document.documentElement.requestFullscreen();
+    } else if (document.documentElement.webkitRequestFullscreen) { // Safari
+      document.documentElement.webkitRequestFullscreen();
+    } else if (document.documentElement.msRequestFullscreen) { // IE11
+      document.documentElement.msRequestFullscreen();
+    }
+    btn.textContent = "Exit Fullscreen";
+  } else {
+    // Exit fullscreen
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.webkitExitFullscreen) { // Safari
+      document.webkitExitFullscreen();
+    } else if (document.msExitFullscreen) { // IE11
+      document.msExitFullscreen();
+    }
+    btn.textContent = "Go Fullscreen";
+  }
+}
+
+// Listen for fullscreen change to update button text if user exits with ESC
+document.addEventListener('fullscreenchange', () => {
+  const btn = document.getElementById('fullscreenBtn');
+  if (!document.fullscreenElement) {
+    btn.textContent = "Go Fullscreen";
+  } else {
+    btn.textContent = "Exit Fullscreen";
+  }
+});
 </script>
 
 
