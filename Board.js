@@ -148,6 +148,8 @@ const startBoard = (game, options = { playAgainst: 'human', aiColor: 'black', ai
         clearSquares();
 
         setLastMoveSquares(from, to);
+        document.getElementById('moveSound').currentTime = 0;
+		document.getElementById('moveSound').play();
     });
 
     game.on('turnChange', startTurn);
@@ -155,6 +157,8 @@ const startBoard = (game, options = { playAgainst: 'human', aiColor: 'black', ai
     game.on('promotion', queen => {
         const square = document.getElementById(queen.position);
         square.innerHTML = `<img class="piece queen" id="${queen.name}" src="img/${queen.color}-queen.webp">`;
+        document.getElementById('promoteSound').currentTime = 0;
+        document.getElementById('promoteSound').play();
     })
 
     game.on('kill', piece => {
@@ -164,6 +168,9 @@ const startBoard = (game, options = { playAgainst: 'human', aiColor: 'black', ai
 
         const sematary = piece.color === 'white' ? whiteSematary : blackSematary;
         sematary.querySelector('.'+piece.rank).append(pieceImg);
+
+        document.getElementById('captureSound').currentTime = 0;
+        document.getElementById('captureSound').play();
     });
 
     game.on('checkMate', color => {
@@ -172,6 +179,8 @@ const startBoard = (game, options = { playAgainst: 'human', aiColor: 'black', ai
         endScene.getElementsByClassName('winning-sign')[0].innerHTML = color + ' Wins';
         endScene.classList.add('show');
         setGameState('checkmate');
+        document.getElementById('gameEndSound').currentTime = 0;
+        document.getElementById('gameEndSound').play();
     });
 
     startTurn('white');
@@ -223,6 +232,9 @@ const startNewGame = () => {
     const aiLevel = 'dumb';
     
     startBoard(game, {playAgainst, aiColor, aiLevel});
+
+    document.getElementById('gameStartSound').currentTime = 0;
+    document.getElementById('gameStartSound').play();
 }
 
 const showColorSelect = () => document.querySelector('.select-color-container').classList.add('show');
