@@ -257,8 +257,41 @@
     🎤
 </button>
 
-<!-- Add a button to trigger fullscreen -->
-
+<!-- Floating Voice Commands Cheatsheet -->
+<div id="voiceCheatsheet" style="
+    position: fixed;
+    top: 30px;
+    right: 30px;
+    z-index: 2000;
+    background: #222;
+    color: #fff;
+    border-radius: 12px;
+    padding: 18px 24px 18px 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    font-size: 1em;
+    opacity: 0.92;
+    max-width: 260px;
+    min-width: 180px;
+    transition: opacity 0.2s;
+    pointer-events: auto;
+">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <strong>🎤 Voice Commands</strong>
+        <button onclick="document.getElementById('voiceCheatsheet').style.display='none'" 
+            style="background:none;border:none;color:#fff;font-size:1.2em;cursor:pointer;">✕</button>
+    </div>
+    <ul style="margin: 12px 0 0 0; padding-left: 18px; font-size: 0.98em;">
+        <li><b>undo</b> – Undo move</li>
+        <li><b>flip board</b> – Flip board</li>
+        <li><b>new game</b> – Start new game</li>
+        <li><b>mute</b> – Mute/unmute sound</li>
+        <li><b>dark mode</b> – Toggle dark mode</li>
+        <li><b>light mode</b> – Toggle light mode</li>
+        <li><b>play move</b> – AI move</li>
+        <li><b>fullscreen</b> – Enter fullscreen</li>
+        <li><b>exit fullscreen</b> – Exit fullscreen</li>
+    </ul>
+</div>
 
 <audio id="moveSound" src="audio/move.mp3" preload="auto"></audio>
 <audio id="captureSound" src="audio/capture.mp3" preload="auto"></audio>
